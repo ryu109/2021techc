@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<head>
+  <title>サンプル プロフィールページ</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #ddd;
+    }
+    .container-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 850px;
+      max-width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    main {
+      background-color: #fff;
+      padding: 1em;
+    }
+
+    section {
+      margin-bottom: 1em;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+    }
+
+    .center {
+      display: flex;
+      justify-content: center;
+    }
+    .icon {
+      width: 300px;
+      max-width: 100%;
+    }
+    .mb {
+      margin-bottom: 2em;
+    }
+    .profile-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .profile-list dt {
+      width: 25%;
+      margin-bottom: 1.5em;
+      font-weight: bold;
+    }
+    .profile-list dd {
+      width: 75%;
+      margin-bottom: 1.5em;
+    }
+    @media screen and (max-width: 480px) {
+      .profile-list dt {
+        width: 100%;
+        margin-bottom: 0.25em;
+      }
+      .profile-list dd {
+        width: 100%;
+        padding-left: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-wrapper">
+    <div class="container">
+      <header>
+        <h1 class="center">ほげ田 ほげ雄</h1>
+        <div class="center mb">
+          <img src="/profile_icon.jpg" class="icon">
+        </div>
+      </header>
+      <main>
+        <section class="mb">
+          ほげ田 ほげ雄のプロフィールです。
+        </section>
+        <hr class="mb">
+        <section>
+          <dl class="profile-list">
+            <dt>職業</dt>
+            <dd>学生</dd>
+            <dt>趣味</dt>
+            <dd>おひるね</dd>
+            <dt>特技</dt>
+            <dd>硬い地面でもどこでも寝ることができる</dd>
+            <dt>好きな食べ物</dt>
+            <dd>お寿司</dd>
+            <dt>嫌いな食べ物</dt>
+            <dd>特になし</dd>
+            <dt>今期おすすめのアニメ</dt>
+            <dd>ゴジラ S.P</dd>
+            <dt>好きなゲーム</dt>
+            <dd>beatmania IIDX 28 BISTROVER</dd>
+            <dt>好きなビール</dt>
+            <dd>バドワイザー</dd>
+            <dt>好きなラーメン</dt>
+            <dd>天一のこってり</dd>
+          </dl>
+        </section>
+        <hr class="mb">
+        <section>
+          よろしくおねがいします。
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
