@@ -42,6 +42,22 @@ $now = new \DateTime("now", new \DateTimeZone('Asia/Tokyo'));
   <circle cx="<?= $svg_area_size / 2 ?>" cy="<?= $svg_area_size / 2 ?>"
     r="<?= $circle_r ?>" stroke="black" fill="white" stroke-width="5"/>
 
+  <!-- マーカー -->
+  <?php
+    foreach(range(1, 60) as $marker):
+    $marker_rad = ($marker / 60) * 2 * pi();
+    $marker_x = ($svg_area_size / 2) + floor(sin($marker_rad) * ($circle_r * 0.95));
+    $marker_y = ($svg_area_size / 2) - floor(cos($marker_rad) * ($circle_r * 0.95));
+  ?>
+    <?php if($marker % 5 === 0): ?>
+      <circle cx="<?= $marker_x ?>" cy="<?= $marker_y ?>"
+        r="10" stroke="gray" fill="gray" stroke-width="1"/>
+    <?php else: ?>
+      <circle cx="<?= $marker_x ?>" cy="<?= $marker_y ?>"
+        r="3" stroke="gray" fill="gray" stroke-width="1"/>
+    <?php endif; ?>
+  <?php endforeach; ?>
+
   <!-- 秒針 -->
   <g stroke="black">
     <line x1="<?= $svg_area_size / 2 ?>" y1="<?= $svg_area_size / 2 ?>"
