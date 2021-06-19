@@ -37,7 +37,6 @@ $now = new \DateTime("now", new \DateTimeZone('Asia/Tokyo'));
 
 <svg width="500" height="500" viewBox="0 0 1000 1000"
      xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <desc>Example line01 - 利用座標系で指定される線分</desc>
 
   <!-- 枠の円 -->
   <circle cx="<?= $svg_area_size / 2 ?>" cy="<?= $svg_area_size / 2 ?>"
