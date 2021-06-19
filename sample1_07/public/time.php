@@ -29,7 +29,8 @@ $now = new \DateTime("now", new \DateTimeZone('Asia/Tokyo'));
 
   $hours = intval($now->format('h'));
   $max_hours = 12;
-  $hours_rad = ($hours / $max_hours) * 2 * pi();
+  // 時針は分も考慮する
+  $hours_rad = (($hours + ($minutes / $max_minutes)) / $max_hours) * 2 * pi();
   $hours_x = ($svg_area_size / 2) + floor(sin($hours_rad) * ($circle_r * 0.5));
   $hours_y = ($svg_area_size / 2) - floor(cos($hours_rad) * ($circle_r * 0.5));
 ?>
