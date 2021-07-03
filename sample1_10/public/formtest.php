@@ -1,13 +1,20 @@
 <?php
+$dbh = new PDO('mysql:host=mysql;dbname=techc', 'root', '');
 
 if (isset($_POST['body'])) {
   // POSTで送られてくるフォームパラメータ body がある場合
 
-  print('以下の内容を受け取りました!<br>');
+  // insertする
+  $insert_sth = $dbh->prepare("INSERT INTO bbs_entries (body) VALUES (:body)");
+  $insert_sth->execute([
+      ':body' => $_POST['body'],
+  ]);
 
-  // 送られてきた内容を出力する際は必ず htmlspecialchars() を用いエスケープすること
-  // XSS対策です。
-  print(nl2br(htmlspecialchars($_POST['body'])));
+  // 処理が終わったらリダイレクトする
+  // リダイレクトしないと，リロード時にまた同じ内容でPOSTすることになる
+  header("HTTP/1.1 302 Found");
+  header("Location: ./formtest.php");
+  return;
 }
 
 ?>
