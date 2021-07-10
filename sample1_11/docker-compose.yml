@@ -8,6 +8,7 @@ services:
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - ./public/:/var/www/public/
+      - image:/var/www/public/image/
     depends_on:
       - php
   php:
@@ -17,6 +18,7 @@ services:
       target: php
     volumes:
       - ./public/:/var/www/public/
+      - image:/var/www/public/image/
   mysql:
     container_name: mysql
     image: mysql:5.7
@@ -33,5 +35,7 @@ services:
       --max_allowed_packet=4MB
 
 volumes:
+  image:
+    driver: local
   mysql:
     driver: local
