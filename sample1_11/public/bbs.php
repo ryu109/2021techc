@@ -5,7 +5,7 @@ if (isset($_POST['body'])) {
   // POSTで送られてくるフォームパラメータ body がある場合
 
   $image_filename = null;
-  if (isset($_FILES['image'])) {
+  if (isset($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
     // アップロードされた画像がある場合
     if (preg_match('/^image\//', $_FILES['image']['type']) !== 1) {
       // アップロードされたものが画像ではなかった場合
@@ -59,7 +59,7 @@ $select_sth->execute();
     <dt>内容</dt>
     <dd>
       <?= nl2br(htmlspecialchars($entry['body'])) // 必ず htmlspecialchars() すること ?>
-      <?php if(isset($entry['image_filename'])): ?>
+      <?php if(!empty($entry['image_filename'])): ?>
       <div>
         <img src="/image/<?= $entry['image_filename'] ?>" style="max-height: 10em;">
       </div>
