@@ -30,11 +30,11 @@ if (empty($session_values['login_user_id'])) {
 // DBに接続
 $dbh = new PDO('mysql:host=mysql;dbname=techc', 'root', '');
 // セッションにあるログインIDから、ログインしている対象の会員情報を引く
-$insert_sth = $dbh->prepare("SELECT * FROM koki02_users WHERE id = :id");
-$insert_sth->execute([
+$select_sth = $dbh->prepare("SELECT * FROM koki02_users WHERE id = :id");
+$select_sth->execute([
     ':id' => $session_values['login_user_id'],
 ]);
-$user = $insert_sth->fetch();
+$user = $select_sth->fetch();
 ?>
 
 <h1>ログイン完了</h1>
