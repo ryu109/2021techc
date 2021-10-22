@@ -6,11 +6,11 @@ if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password
   // POSTで name と email と password が送られてきた場合はDBへの登録処理をする
 
   // 既に同じメールアドレスで登録された会員が存在しないか確認する
-  $insert_sth = $dbh->prepare("SELECT * FROM koki02_users WHERE email = :email ORDER BY id DESC LIMIT 1");
-  $insert_sth->execute([
+  $select_sth = $dbh->prepare("SELECT * FROM koki02_users WHERE email = :email ORDER BY id DESC LIMIT 1");
+  $select_sth->execute([
     ':email' => $_POST['email'],
   ]);
-  $user = $insert_sth->fetch();
+  $user = $select_sth->fetch();
   if (!empty($user)) {
     // 存在した場合 エラー用のクエリパラメータ付き会員登録画面にリダイレクトする
     header("HTTP/1.1 302 Found");
