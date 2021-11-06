@@ -1,4 +1,4 @@
-CREATE TABLE `koki02_users` (
+CREATE TABLE `users` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` TEXT NOT NULL,
     `email` TEXT NOT NULL,
