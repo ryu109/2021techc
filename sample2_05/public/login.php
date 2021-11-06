@@ -6,7 +6,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
   // POSTで email と password が送られてきた場合のみログイン処理をする
 
   // email から会員情報を引く
-  $select_sth = $dbh->prepare("SELECT * FROM koki02_users WHERE email = :email ORDER BY id DESC LIMIT 1");
+  $select_sth = $dbh->prepare("SELECT * FROM users WHERE email = :email ORDER BY id DESC LIMIT 1");
   $select_sth->execute([
     ':email' => $_POST['email'],
   ]);
