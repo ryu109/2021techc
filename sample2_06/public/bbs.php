@@ -1,8 +1,9 @@
 <?php
 $dbh = new PDO('mysql:host=mysql;dbname=techc', 'root', '');
 
-if (isset($_POST['body'])) {
-  // POSTで送られてくるフォームパラメータ body がある場合
+session_start();
+if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
+  // POSTで送られてくるフォームパラメータ body がある かつ ログイン状態 の場合
 
   $image_filename = null;
   if (!empty($_POST['image_base64'])) {
@@ -19,10 +20,11 @@ if (isset($_POST['body'])) {
   }
 
   // insertする
-  $insert_sth = $dbh->prepare("INSERT INTO bbs_entries (body, image_filename) VALUES (:body, :image_filename)");
+  $insert_sth = $dbh->prepare("INSERT INTO bbs_entries (user_id, body, image_filename) VALUES (:user_id, :body, :image_filename)");
   $insert_sth->execute([
-      ':body' => $_POST['body'],
-      ':image_filename' => $image_filename,
+      ':user_id' => $_SESSION['login_user_id'], // ログインしている会員情報の主キー
+      ':body' => $_POST['body'], // フォームから送られてきた投稿本文
+      ':image_filename' => $image_filename, // 保存した画像の名前 (nullの場合もある)
   ]);
 
   // 処理が終わったらリダイレクトする
@@ -50,17 +52,20 @@ function bodyFilter (string $body): string
 }
 ?>
 
-<!-- フォームのPOST先はこのファイル自身にする -->
-<form method="POST" action="./bbs.php"><!-- enctypeは外しておきましょう -->
-  <textarea name="body" required></textarea>
-  <div style="margin: 1em 0;">
-    <input type="file" accept="image/*" name="image" id="imageInput">
-  </div>
-  <input id="imageBase64Input" type="hidden" name="image_base64"><!-- base64を送る用のinput (非表示) -->
-  <canvas id="imageCanvas" style="display: none;"></canvas><!-- 画像縮小に使うcanvas (非表示) -->
-  <button type="submit">送信</button>
-</form>
-
+<?php if(empty($_SESSION['login_user_id'])): ?>
+  投稿するには<a href="/login.php">ログイン</a>が必要です。
+<?php else: ?>
+  <!-- フォームのPOST先はこのファイル自身にする -->
+  <form method="POST" action="./bbs.php"><!-- enctypeは外しておきましょう -->
+    <textarea name="body" required></textarea>
+    <div style="margin: 1em 0;">
+      <input type="file" accept="image/*" name="image" id="imageInput">
+    </div>
+    <input id="imageBase64Input" type="hidden" name="image_base64"><!-- base64を送る用のinput (非表示) -->
+    <canvas id="imageCanvas" style="display: none;"></canvas><!-- 画像縮小に使うcanvas (非表示) -->
+    <button type="submit">送信</button>
+  </form>
+<?php endif; ?>
 <hr>
 
 <?php foreach($select_sth as $entry): ?>
@@ -70,6 +75,12 @@ function bodyFilter (string $body): string
     </dt>
     <dd>
       <?= htmlspecialchars($entry['id']) ?>
+    </dd>
+    <dt>
+      投稿者
+    </dt>
+    <dd>
+      会員ID: <?= htmlspecialchars($entry['user_id']) ?>
     </dd>
     <dt>日時</dt>
     <dd><?= $entry['created_at'] ?></dd>
