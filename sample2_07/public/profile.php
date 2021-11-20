@@ -50,6 +50,15 @@ $select_sth->execute([
     style="height: 5em; width: 5em; border-radius: 50%; object-fit: cover;">
   <?php endif; ?>
 </div>
+
+<?php if(!empty($user['birthday'])): ?>
+<?php
+  $birthday = DateTime::createFromFormat('Y-m-d', $user['birthday']);
+  $today = new DateTime('now');
+?>
+  <?= $today->diff($birthday)->y ?>歳
+<?php endif; ?>
+
 <div>
   <?= nl2br(htmlspecialchars($user['introduction'])) ?>
 </div>
