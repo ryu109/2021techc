@@ -3,7 +3,7 @@ session_start();
 
 if (empty($_SESSION['login_user_id'])) {
   header("HTTP/1.1 302 Found");
-  header("Location: ./login.php");
+  header("Location: /login.php");
   return;
 }
 
@@ -31,6 +31,7 @@ if (isset($_POST['name'])) {
   return;
 }
 ?>
+<a href="./index.php">設定一覧に戻る</a>
 
 <h1>名前変更</h1>
 <form method="POST">
