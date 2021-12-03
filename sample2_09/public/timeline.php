@@ -40,28 +40,17 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
   return;
 }
 
-// 表示対象の会員ID(フォローしている会員)のリストを取得
-$target_user_ids_select_sth = $dbh->prepare(
-  'SELECT * FROM user_relationships WHERE follower_user_id = :follower_user_id'
-);
-$target_user_ids_select_sth->execute([
-  ':follower_user_id' => $_SESSION['login_user_id'],
-]);
-$target_user_ids = array_map(
-    function ($relationship) {
-        return $relationship['followee_user_id'];
-    },
-    $target_user_ids_select_sth->fetchAll()
-); // array_map で followee_user_id カラムだけ抜き出す
-$target_user_ids[] = $_SESSION['login_user_id']; // 自分自身の投稿も表示対象とする
-
 // 投稿データを取得。IN句の中身もプレースホルダを使うために、$target_user_ids の要素数だけ「?」を付けている。
 $sql = 'SELECT bbs_entries.*, users.name AS user_name, users.icon_filename AS user_icon_filename'
-  . ' FROM bbs_entries INNER JOIN users ON bbs_entries.user_id = users.id'
-  . ' WHERE bbs_entries.user_id IN (' . substr(str_repeat(',?', count($target_user_ids)), 1) . ')'
+  . ' FROM bbs_entries'
+  . ' INNER JOIN users ON bbs_entries.user_id = users.id'
+  . ' LEFT OUTER JOIN user_relationships ON bbs_entries.user_id = user_relationships.followee_user_id'
+  . ' WHERE user_relationships.follower_user_id = :login_user_id OR bbs_entries.user_id = :login_user_id'
   . ' ORDER BY bbs_entries.created_at DESC';
 $select_sth = $dbh->prepare($sql);
-$select_sth->execute($target_user_ids);
+$select_sth->execute([
+    ':login_user_id' => $_SESSION['login_user_id'],
+]);
 
 // bodyのHTMLを出力するための関数を用意する
 function bodyFilter (string $body): string
