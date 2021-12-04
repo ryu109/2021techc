@@ -44,8 +44,10 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
 $sql = 'SELECT bbs_entries.*, users.name AS user_name, users.icon_filename AS user_icon_filename'
   . ' FROM bbs_entries'
   . ' INNER JOIN users ON bbs_entries.user_id = users.id'
-  . ' LEFT OUTER JOIN user_relationships ON bbs_entries.user_id = user_relationships.followee_user_id'
-  . ' WHERE user_relationships.follower_user_id = :login_user_id OR bbs_entries.user_id = :login_user_id'
+  . ' WHERE'
+  . '   bbs_entries.user_id IN'
+  . '     (SELECT followee_user_id FROM user_relationships WHERE follower_user_id = :login_user_id)'
+  . '   OR bbs_entries.user_id = :login_user_id'
   . ' ORDER BY bbs_entries.created_at DESC';
 $select_sth = $dbh->prepare($sql);
 $select_sth->execute([
