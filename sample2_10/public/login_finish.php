@@ -22,7 +22,7 @@ $user = $select_sth->fetch();
 
 <p>
   ログイン完了しました!<br>
-  <a href="/bbs.php">掲示板はこちら</a>
+  <a href="/timeline.php">タイムラインはこちら</a>
 </p>
 <hr>
 <p>
